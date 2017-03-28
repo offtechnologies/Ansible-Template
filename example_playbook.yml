@@ -1,0 +1,25 @@
+---
+- hosts: app
+  remote_user: "{{ remote_user }}"
+  vars_files:
+    - "{{ env }}/group_vars/certs.yml"
+    - "{{ env }}/group_vars/credentials.yml"
+    - "{{ env }}/group_vars/keys.yml"
+    - "{{ env }}/group_vars/deploy_keys.yml"
+  roles:
+    - common
+    - security
+    - credentials
+    - apache
+    - php
+    - hosts
+    - ssl-keys
+    - node
+    - newrelic
+  tasks:
+    - name: Bring Apache Online
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+      sudo: yes
